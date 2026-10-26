@@ -1,36 +1,19 @@
-# Two Isotropic Sources
-# Unequal Amplitude + Opposite Phase
-
+"""Lab 8: Far-field pattern of two isotropic point sources,
+unequal amplitude and opposite phase (d = lambda/2)"""
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Parameters
-lam = 1.0
-d = lam / 2
-k = 2 * np.pi / lam
+d = 0.5          # lambda/2
+A1, A2 = 1.0, 0.5   # unequal amplitudes
+phase = np.pi       # opposite phase
 
-# Amplitude weights
-A1 = 1
-A2 = 0.5                 # Unequal amplitude
+phi = np.linspace(0, 2 * np.pi, 721)
+psi = 2 * np.pi * d * np.cos(phi)
 
-# Angle range
-theta = np.linspace(0, 2 * np.pi, 1000)
+E = np.abs(A1 + A2 * np.exp(1j * (psi + phase)))
+E = E / E.max()
 
-# Array Factor
-AF = A1 - A2 * np.exp(1j * k * d * np.cos(theta))
-
-# Normalize
-AF_norm = np.abs(AF) / np.max(np.abs(AF))
-
-# Plot
-plt.figure(figsize=(6, 6))
-
-plt.polar(theta, AF_norm)
-
-plt.title(
-    "Far-Field Pattern\n"
-    "Unequal Amplitude + Opposite Phase\n"
-    "(d = λ/2)"
-)
-
+ax = plt.subplot(111, projection="polar")
+ax.plot(phi, E, linewidth=2)
+ax.set_title("Two Isotropic Sources: Unequal Amp (1:0.5), Opposite Phase (d=λ/2)", pad=20)
 plt.show()
